@@ -7,6 +7,8 @@ import File from '../models/File';
 
 class AppointmentController {
   async index(req, res) {
+    const { page = 1 } = req.query;
+
     const appointments = await Appointment.findAll({
       attributes: ['id', 'date'],
       where: {
@@ -14,6 +16,8 @@ class AppointmentController {
         canceled_at: null,
       },
       order: ['date'],
+      limit: 20,
+      offset: (page - 1) * 20,
       include: [
         {
           model: User,
